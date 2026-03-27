@@ -1,4 +1,4 @@
-package Skillmap.Skillmap;
+package com.skillmap;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
