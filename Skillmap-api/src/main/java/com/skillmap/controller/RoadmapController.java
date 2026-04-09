@@ -1,5 +1,7 @@
 package com.skillmap.controller;
 
+import com.skillmap.model.RoadmapData;
+import com.skillmap.model.RoadmapRequest;
 import com.skillmap.service.RoadmapService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,11 @@ public class RoadmapController {
 	}
 
 	@GetMapping
-	public String getRoadmap(@RequestParam String type) {
-		return service.generate(type);
+	public RoadmapData getRoadmap(
+			@RequestParam String field,
+			@RequestParam String track,
+			@RequestParam String specialization
+	) {
+		return service.generate(new RoadmapRequest(field, track, specialization));
 	}
 }
