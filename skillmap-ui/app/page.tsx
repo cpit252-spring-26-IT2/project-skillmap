@@ -90,6 +90,9 @@ export default function Home() {
     })
   }
 
+  const getCompletedCount = (items: Array<Skill | Certification>) =>
+    items.filter((item) => item.completed).length
+
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
@@ -228,7 +231,7 @@ export default function Home() {
                 <CardHeader>
                   <CardTitle className="text-xl">Skills</CardTitle>
                   <CardDescription>
-                    Core skills to master for your specialization
+                    {getCompletedCount(roadmap.skills)} / {roadmap.skills.length} skills completed
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -265,7 +268,7 @@ export default function Home() {
                 <CardHeader>
                   <CardTitle className="text-xl">Certifications</CardTitle>
                   <CardDescription>
-                    Recommended certifications to validate your expertise
+                    {getCompletedCount(roadmap.certifications)} / {roadmap.certifications.length} certifications completed
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
