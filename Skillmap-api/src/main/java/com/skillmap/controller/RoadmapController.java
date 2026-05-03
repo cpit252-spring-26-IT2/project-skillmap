@@ -1,8 +1,7 @@
 package com.skillmap.controller;
 
+import com.skillmap.facade.RoadmapGenerationFacade;
 import com.skillmap.model.RoadmapData;
-import com.skillmap.model.RoadmapRequest;
-import com.skillmap.service.RoadmapService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class RoadmapController {
 
-	private final RoadmapService service;
+	private final RoadmapGenerationFacade facade;
 
-	public RoadmapController(RoadmapService service) {
-		this.service = service;
+	public RoadmapController(RoadmapGenerationFacade facade) {
+		this.facade = facade;
 	}
 
 	@GetMapping
@@ -26,6 +25,7 @@ public class RoadmapController {
 			@RequestParam String track,
 			@RequestParam String specialization
 	) {
-		return service.generate(new RoadmapRequest(field, track, specialization));
+		// The controller now delegates to the Facade instead of knowing about the Service and Request models
+		return facade.generateVerifiedTemplate(field, track, specialization);
 	}
 }

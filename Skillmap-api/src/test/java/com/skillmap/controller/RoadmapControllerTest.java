@@ -1,5 +1,6 @@
 package com.skillmap.controller;
 
+import com.skillmap.facade.RoadmapGenerationFacade;
 import com.skillmap.service.RoadmapService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,9 @@ class RoadmapControllerTest {
 
 	@BeforeEach
 	void setUp() {
-		RoadmapController controller = new RoadmapController(new RoadmapService());
+		// Update test setup to use the new Facade pattern dependency
+		RoadmapGenerationFacade facade = new RoadmapGenerationFacade(new RoadmapService());
+		RoadmapController controller = new RoadmapController(facade);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setControllerAdvice(new GlobalExceptionHandler())
 				.build();

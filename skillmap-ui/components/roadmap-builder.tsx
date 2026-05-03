@@ -46,18 +46,16 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
+import { ApiClientFacade } from "@/lib/api-client"
 import { upsertRoadmap } from "@/lib/storage"
 import type {
   ChecklistItem,
   ResourceItem,
   Roadmap,
-  TemplateRoadmap,
   WeeklyTask,
 } from "@/lib/types"
 
 type ChecklistKind = "skills" | "certifications"
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8081"
 
 const createId = () =>
   typeof crypto !== "undefined" && "randomUUID" in crypto
@@ -214,14 +212,12 @@ export function RoadmapBuilder({ initial, mode }: RoadmapBuilderProps) {
     setError(null)
     setMessage(null)
     try {
-      const params = new URLSearchParams({
-        field: "IT",
-        track: "Software Engineering",
-        specialization: templateSpecialization,
-      })
-      const response = await fetch(`${API_URL}/roadmap?${params.toString()}`)
-      if (!response.ok) throw new Error("Template request failed")
-      const template: TemplateRoadmap = await response.json()
+      // ---------------------------------------------------------
+      // FACADE PATTERN: We no longer handle URLs or JSON parsing here.
+      // The UI component simply asks the Facade for the template.
+      // ---------------------------------------------------------
+      const template = await ApiClientFacade.getTemplate(templateSpecialization)
+      
       setRoadmap((c) => ({
         ...c,
         title: template.title,
@@ -262,36 +258,12 @@ export function RoadmapBuilder({ initial, mode }: RoadmapBuilderProps) {
     const saved = upsertRoadmap(user.id, roadmap)
     const stored = saved.find((r) => r.id === roadmap.id) ?? roadmap
 
-    // Best-effort backend validation via the Builder Pattern endpoint.
     try {
-      await fetch(`${API_URL}/roadmaps`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...stored,
-          skills: stored.skills.map(({ name, category, completed }) => ({
-            name,
-            category,
-            completed,
-          })),
-          certifications: stored.certifications.map(({ name, category, completed }) => ({
-            name,
-            category,
-            completed,
-          })),
-          weeklyTasks: stored.weeklyTasks.map(({ week, title, description, completed }) => ({
-            week,
-            title,
-            description,
-            completed,
-          })),
-          resources: stored.resources.map(({ name, type, reference }) => ({
-            name,
-            type,
-            reference,
-          })),
-        }),
-      })
+      // ---------------------------------------------------------
+      // FACADE PATTERN: We offload the complex payload formatting 
+      // and HTTP request to the Facade class.
+      // ---------------------------------------------------------
+      await ApiClientFacade.validateAndSave(stored)
       setMessage("Roadmap saved and validated by the backend builder.")
     } catch {
       setMessage("Roadmap saved locally. Backend validation is unavailable right now.")
