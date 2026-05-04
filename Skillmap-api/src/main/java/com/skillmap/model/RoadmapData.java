@@ -8,6 +8,7 @@ public record RoadmapData(
 		String track,
 		String specialization,
 		List<ChecklistItem> skills,
-		List<ChecklistItem> certifications
+		List<ChecklistItem> certifications,
+		List<WeeklyTask> weeklyTasks
 ) {
 }

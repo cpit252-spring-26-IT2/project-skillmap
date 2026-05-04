@@ -226,6 +226,7 @@ export function RoadmapBuilder({ initial, mode }: RoadmapBuilderProps) {
         targetRole: template.specialization,
         skills: template.skills.map((i) => ({ ...i, id: createId() })),
         certifications: template.certifications.map((i) => ({ ...i, id: createId() })),
+        weeklyTasks: template.weeklyTasks.map((i) => ({ ...i, id: createId() })),
       }))
       setMessage("Verified template loaded. You can edit it before saving.")
     } catch {
@@ -610,6 +611,9 @@ export function RoadmapBuilder({ initial, mode }: RoadmapBuilderProps) {
                     <SelectItem value="Frontend">Frontend</SelectItem>
                     <SelectItem value="Backend">Backend</SelectItem>
                     <SelectItem value="Mobile">Mobile</SelectItem>
+                    <SelectItem value="AI">AI & Machine Learning</SelectItem>
+                    <SelectItem value="Cloud">Cloud Engineering</SelectItem>
+                    <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button

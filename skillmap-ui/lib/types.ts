@@ -56,4 +56,5 @@ export interface TemplateRoadmap {
   specialization: string
   skills: Array<Omit<ChecklistItem, "id">>
   certifications: Array<Omit<ChecklistItem, "id">>
+  weeklyTasks: Array<Omit<WeeklyTask, "id">>
 }

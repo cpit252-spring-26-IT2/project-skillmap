@@ -1,6 +1,9 @@
 package com.skillmap.factory;
 
+import com.skillmap.model.AIRoadmap;
 import com.skillmap.model.BackendRoadmap;
+import com.skillmap.model.CloudEngRoadmap;
+import com.skillmap.model.CybersecurityRoadmap;
 import com.skillmap.model.FrontendRoadmap;
 import com.skillmap.model.MobileRoadmap;
 import com.skillmap.model.Roadmap;
@@ -27,8 +30,11 @@ public class RoadmapFactory {
 			case "frontend", "frontend development" -> new FrontendRoadmap();
 			case "backend", "backend development" -> new BackendRoadmap();
 			case "mobile", "mobile development", "mobile programmer" -> new MobileRoadmap();
+			case "ai", "artificial intelligence", "machine learning" -> new AIRoadmap();
+			case "cloud", "cloud engineering", "cloud infrastructure" -> new CloudEngRoadmap();
+			case "cybersecurity", "security", "cyber security" -> new CybersecurityRoadmap();
 			default -> throw new InvalidRoadmapRequestException(
-					"Invalid specialization. Choose Frontend, Backend, or Mobile."
+					"Invalid specialization. Choose Frontend, Backend, Mobile, AI, Cloud Engineering, or Cybersecurity."
 			);
 		};
 	}
